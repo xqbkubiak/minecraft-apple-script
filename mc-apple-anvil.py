@@ -921,7 +921,18 @@ class PlacerGUI(ctk.CTk):
     def setup_hotkeys(self):
         keyboard.add_hotkey(START_KEY, self.toggle_placer)
         keyboard.add_hotkey(EXIT_KEY, self.on_close)
-    
+        keyboard.add_hotkey('f10', self.log_coords)
+        
+    def log_coords(self):
+        x, y = pyautogui.position()
+        origin_x, origin_y = self.placer.get_client_origin()
+        rel_x = x - origin_x
+        rel_y = y - origin_y
+        
+        msg = f"📍 Mouse: Abs={x},{y} | Rel={rel_x},{rel_y}"
+        print(msg) # Print to console
+        self.add_log(msg) # Add to GUI
+
     def toggle_placer(self):
         self.update_opts()
         

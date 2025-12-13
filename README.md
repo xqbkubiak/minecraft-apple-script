@@ -11,6 +11,7 @@ A simple Minecraft automation script for apple farming. Built with Python and Cu
 - **Auto Block Placing** - Automatically switches slots and places blocks
 - **Slot Rotation** - Rotates through slots 2-9 (or 3-9 with eating) every N cycles
 - **Auto Repair** - Runs `/repair` command at configurable intervals
+- **Free Repair (Crafting)** - Automatically crafts new shears for players without `/repair`
 - **Auto Eating** - Automatically eats from slot 2 to keep hunger full
 - **Minecraft Detection** - Smart window detection (ignores browsers, focuses on game)
 - **Config Saving** - Saves your settings to JSON file
@@ -46,8 +47,8 @@ A simple Minecraft automation script for apple farming. Built with Python and Cu
 | Option | Description | Default |
 |--------|-------------|---------|
 | Enable /repair | Automatically run repair command | On |
-| Repair every | Cycles between repairs | 100 |
-| Action delay | Delay between actions (seconds) | 0.05 |
+| Free Repair (Crafting) | Craft new shears (for non-ranked players) | Off |
+| Repair every | Cycles between repairs/crafting | 100 / 238 |
 | Slot Rotation | Rotate through slots 2-9 | Off |
 | Rotate every | Cycles between slot changes | 500 |
 | Eating (slot 2) | Reserve slot 2 for food, auto eat | Off |
@@ -73,9 +74,14 @@ A simple Minecraft automation script for apple farming. Built with Python and Cu
 3. Switch back to slot 1
 4. Left click
 5. Repeat cycle
-6. Run `/repair` every N cycles (if enabled)
+6. Run `/repair` OR Craft Shears every N cycles (if enabled)
 7. Rotate slot every N cycles (if enabled)
 8. Eat from slot 2 every N cycles (if eating enabled) - holds right click for 2.5s
+
+### ✂️ Free Repair (Crafting Mode)
+If you don't have access to `/repair`, enable **Free Repair**.
+1. Have a stack of Iron Ingots in your inventory.
+2. The bot will automatically open inventory, craft new shears, and resume farming.
 
 ## ⚠️ Disclaimer
 
