@@ -87,3 +87,4 @@ echo.
 echo You can now run the bot using 'start_bot.bat'
 echo ===================================================
 pause
+:: End of installer
