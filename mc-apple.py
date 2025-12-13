@@ -12,7 +12,7 @@ import webbrowser
 START_KEY = "f8"
 EXIT_KEY = "f9"
 
-REPAIR_EVERY = 239
+REPAIR_EVERY = 100
 PLACE_DELAY = 0.05
 SLOT_ROTATE_EVERY = 500
 
@@ -39,7 +39,7 @@ class ConfigManager:
     DEFAULT_CONFIG = {
         'use_repair': True,
         'use_free_repair': False,
-        'repair_every': 100,
+        'repair_every': 239,
         'place_delay': 0.05,
         'use_slot_rotation': False,
         'slot_rotate_every': 500,
@@ -218,12 +218,9 @@ class BlockPlacer:
         """Resizes the Minecraft window to 1280x720."""
         if self.hwnd:
             try:
-                # Restore if minimized
-                user32.ShowWindow(self.hwnd, 9) # SW_RESTORE
+                user32.ShowWindow(self.hwnd, 9)
                 time.sleep(0.2)
                 
-                # Move and Resize
-                # X=0, Y=0, Width=1280, Height=720, Repaint=True
                 user32.MoveWindow(self.hwnd, 0, 0, 1280, 720, True)
                 self.log("   📏 Resized Minecraft to 1280x720")
             except Exception as e:
@@ -280,7 +277,7 @@ class BlockPlacer:
             return self.SLOT_KEYS[self.current_slot]
         else:
             if self.use_eating:
-                return 0x33  # VK_3 - slot 3 when eating is enabled
+                return 0x33
             return VK_2
     
     def get_starting_slot(self):
@@ -290,7 +287,7 @@ class BlockPlacer:
     def rotate_slot(self):
         """Rotates to next slot (3->4->...->9->3 if eating, else 2->3->...->9->2)."""
         start_slot = self.get_starting_slot()
-        max_slot = 8  # slot 9 index
+        max_slot = 8
         old_slot = self.current_slot + 1
         
         if self.current_slot >= max_slot:
@@ -312,10 +309,10 @@ class BlockPlacer:
         self.key_press(VK_2, duration=0.02)
         time.sleep(0.1)
         
-        # Hold right click for eating (longer hold)
+
         if self.hwnd:
             PostMessage(self.hwnd, WM_RBUTTONDOWN, MK_RBUTTON, 0)
-            time.sleep(2.5)  # Hold for 2.5 seconds to eat
+            time.sleep(2.5)
             PostMessage(self.hwnd, WM_RBUTTONUP, 0, 0)
         
         time.sleep(0.2)
@@ -376,39 +373,31 @@ class BlockPlacer:
         """
         self.log("   ✂️ Free Repair (Crafting)...")
         
-        # COORDINATES (From User Logs Step 171)
-        # Assume 1280x720 window at 0,0
-        IRON_SLOT = (648, 391)      # Where your Iron stack is
-        CRAFT_1 = (827, 301)        # Top-Right crafting slot (2x2 grid)
-        CRAFT_2 = (868, 255)        # Bottom-Left crafting slot (2x2 grid)
-        RESULT_SLOT = (947, 277)    # Output slot
+        IRON_SLOT = (648, 391)
+        CRAFT_1 = (827, 301)
+        CRAFT_2 = (868, 255)
+        RESULT_SLOT = (947, 277)
         
-        # 1. Open Inventory
-        self.key_press(0x45) # VK_E
+        self.key_press(0x45)
         time.sleep(0.5)
         
         try:
-            # 2. Pick up Iron
             pyautogui.moveTo(*IRON_SLOT)
             pyautogui.click()
             time.sleep(0.1)
             
-            # 3. Place Iron 1
             pyautogui.moveTo(*CRAFT_1)
             pyautogui.click(button='right')
             time.sleep(0.1)
             
-            # 4. Place Iron 2
             pyautogui.moveTo(*CRAFT_2)
             pyautogui.click(button='right')
             time.sleep(0.1)
             
-            # 5. Put back rest of Iron
             pyautogui.moveTo(*IRON_SLOT)
             pyautogui.click()
             time.sleep(0.1)
             
-            # 6. Craft (Shift+Click)
             pyautogui.keyDown('shift')
             pyautogui.moveTo(*RESULT_SLOT)
             pyautogui.click()
@@ -417,19 +406,16 @@ class BlockPlacer:
             
         except Exception as e:
             self.log(f"   ❌ Craft Error: {e}")
-            pyautogui.keyUp('shift') # Safety
+            pyautogui.keyUp('shift')
             
-        # 7. Close Inventory
-        self.key_press(0x1B) # VK_ESCAPE
+        self.key_press(0x1B)
         time.sleep(0.3)
         
-        # Double check close
-        self.key_press(0x1B) # VK_ESCAPE
+        self.key_press(0x1B)
         time.sleep(0.2)
         
     def repair(self):
         """Executes repair sequence (Command or Free Crafting)."""
-        # Run if either repair mode is enabled
         if not self.running or self.paused:
             return
         
@@ -449,7 +435,6 @@ class BlockPlacer:
         
     def repair(self):
         """Executes repair sequence (Command or Manual)."""
-        # Run if either repair mode is enabled
         if not self.running or self.paused:
             return
         
@@ -507,7 +492,6 @@ class BlockPlacer:
                 if not found:
                     return False, None
             
-            # Auto-resize if free repair is enabled
             if self.use_free_repair:
                 self.resize_window()
                 
@@ -562,9 +546,9 @@ class PlacerGUI(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        # Force taskbar icon
+
         try:
-            myappid = 'mcapple.bot.gui.1.0' # arbitrary string
+            myappid = 'mcapple.bot.gui.1.0'
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
         except:
             pass
@@ -586,7 +570,7 @@ class PlacerGUI(ctk.CTk):
         
         self.create_widgets()
         
-        # Check Admin Rights
+
         try:
             is_admin = ctypes.windll.shell32.IsUserAnAdmin()
             if not is_admin:
@@ -764,7 +748,6 @@ class PlacerGUI(ctk.CTk):
         self.repair_every_entry.pack(side="right")
         self.repair_every_entry.insert(0, "100")
         
-        # row3 removed (Action delay)
         
         ctk.CTkFrame(opts_content, fg_color=self.COLORS['border'], height=1).pack(fill="x", pady=8)
         
@@ -906,7 +889,7 @@ class PlacerGUI(ctk.CTk):
         except:
             self.placer.repair_every = 100
         
-        # Fixed delay
+
         self.placer.place_delay = 0.05
         
         self.placer.use_slot_rotation = self.slot_rotation_sw.get()
@@ -921,9 +904,9 @@ class PlacerGUI(ctk.CTk):
         except:
             self.placer.eat_every = 1000
         
-        # Update starting slot when eating option changes
+
         if self.placer.use_eating and self.placer.current_slot < 2:
-            self.placer.current_slot = 2  # Start from slot 3
+            self.placer.current_slot = 2
     
     def setup_hotkeys(self):
         keyboard.add_hotkey(START_KEY, self.toggle_placer)
@@ -972,7 +955,7 @@ class PlacerGUI(ctk.CTk):
             'use_repair': self.repair_sw.get(),
             'use_free_repair': self.free_repair_sw.get(),
             'repair_every': int(self.repair_every_entry.get()) if self.repair_every_entry.get().isdigit() else 100,
-            # 'place_delay': removed
+
             'use_slot_rotation': self.slot_rotation_sw.get(),
             'slot_rotate_every': int(self.slot_rotate_entry.get()) if self.slot_rotate_entry.get().isdigit() else 500,
             'use_eating': self.eating_sw.get(),
@@ -1001,7 +984,7 @@ class PlacerGUI(ctk.CTk):
         self.repair_every_entry.delete(0, 'end')
         self.repair_every_entry.insert(0, str(self.config.get('repair_every', 238)))
         
-        # self.delay_entry removed
+
         
         if self.config.get('use_slot_rotation', False):
             self.slot_rotation_sw.select()
