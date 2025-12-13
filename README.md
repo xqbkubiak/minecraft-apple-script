@@ -1,4 +1,4 @@
-# � MC-Apple
+# MC-Apple
 
 A simple Minecraft automation script for apple farming. Built with Python and CustomTkinter for a sleek, modern interface.
 
