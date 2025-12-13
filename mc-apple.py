@@ -38,6 +38,7 @@ class ConfigManager:
     
     DEFAULT_CONFIG = {
         'use_repair': True,
+        'use_free_repair': False,
         'repair_every': 100,
         'place_delay': 0.05,
         'use_slot_rotation': False,
@@ -108,6 +109,11 @@ MapVirtualKey = user32.MapVirtualKeyW
 MAPVK_VK_TO_VSC = 0
 
 
+class POINT(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
+
+ClientToScreen = user32.ClientToScreen
+
 def make_lparam(vk, down=True):
     scan_code = MapVirtualKey(vk, MAPVK_VK_TO_VSC)
     if down:
@@ -129,6 +135,7 @@ class BlockPlacer:
         self.cycle_count = 0
         
         self.use_repair = True
+        self.use_free_repair = False
         self.repair_every = REPAIR_EVERY
         self.place_delay = PLACE_DELAY
         
@@ -206,6 +213,21 @@ class BlockPlacer:
             lparam = make_lparam(vk, down=False)
             PostMessage(self.hwnd, WM_KEYUP, vk, lparam)
             SendMessage(self.hwnd, WM_KEYUP, vk, lparam)
+
+    def resize_window(self):
+        """Resizes the Minecraft window to 1280x720."""
+        if self.hwnd:
+            try:
+                # Restore if minimized
+                user32.ShowWindow(self.hwnd, 9) # SW_RESTORE
+                time.sleep(0.2)
+                
+                # Move and Resize
+                # X=0, Y=0, Width=1280, Height=720, Repaint=True
+                user32.MoveWindow(self.hwnd, 0, 0, 1280, 720, True)
+                self.log("   📏 Resized Minecraft to 1280x720")
+            except Exception as e:
+                self.log(f"   ❌ Resize failed: {e}")
     
     def key_press(self, vk, duration=0.05):
         self.key_down(vk)
@@ -325,17 +347,125 @@ class BlockPlacer:
         self.left_click()
         time.sleep(self.place_delay)
     
+    def get_client_origin(self):
+        """Returns the (x, y) screen coordinates of the client area top-left corner."""
+        if self.hwnd:
+            pt = POINT(0, 0)
+            ClientToScreen(self.hwnd, ctypes.byref(pt))
+            return pt.x, pt.y
+        return 0, 0
+
+    def get_client_origin(self):
+        """Returns the (x, y) screen coordinates of the client area top-left corner."""
+        if self.hwnd:
+            pt = POINT(0, 0)
+            ClientToScreen(self.hwnd, ctypes.byref(pt))
+            return pt.x, pt.y
+        return 0, 0
+
+    def perform_free_repair(self):
+        """
+        Executes 'Free Repair' (Crafting Shears) sequence.
+        1. Open Inventory (E)
+        2. Click Iron Stack
+        3. Right Click Craft Slot 1 (Place 1 Iron)
+        4. Right Click Craft Slot 2 (Place 1 Iron)
+        5. Put back Iron (Click original slot)
+        6. Shift+Click Result (Craft Shears)
+        7. Close (E)
+        """
+        self.log("   ✂️ Free Repair (Crafting)...")
+        
+        # COORDINATES (From User Logs Step 171)
+        # Assume 1280x720 window at 0,0
+        IRON_SLOT = (648, 391)      # Where your Iron stack is
+        CRAFT_1 = (827, 301)        # Top-Right crafting slot (2x2 grid)
+        CRAFT_2 = (868, 255)        # Bottom-Left crafting slot (2x2 grid)
+        RESULT_SLOT = (947, 277)    # Output slot
+        
+        # 1. Open Inventory
+        self.key_press(0x45) # VK_E
+        time.sleep(0.5)
+        
+        try:
+            # 2. Pick up Iron
+            pyautogui.moveTo(*IRON_SLOT)
+            pyautogui.click()
+            time.sleep(0.1)
+            
+            # 3. Place Iron 1
+            pyautogui.moveTo(*CRAFT_1)
+            pyautogui.click(button='right')
+            time.sleep(0.1)
+            
+            # 4. Place Iron 2
+            pyautogui.moveTo(*CRAFT_2)
+            pyautogui.click(button='right')
+            time.sleep(0.1)
+            
+            # 5. Put back rest of Iron
+            pyautogui.moveTo(*IRON_SLOT)
+            pyautogui.click()
+            time.sleep(0.1)
+            
+            # 6. Craft (Shift+Click)
+            pyautogui.keyDown('shift')
+            pyautogui.moveTo(*RESULT_SLOT)
+            pyautogui.click()
+            pyautogui.keyUp('shift')
+            time.sleep(0.1)
+            
+        except Exception as e:
+            self.log(f"   ❌ Craft Error: {e}")
+            pyautogui.keyUp('shift') # Safety
+            
+        # 7. Close Inventory
+        self.key_press(0x1B) # VK_ESCAPE
+        time.sleep(0.3)
+        
+        # Double check close
+        self.key_press(0x1B) # VK_ESCAPE
+        time.sleep(0.2)
+        
     def repair(self):
-        """Executes /repair after specified cycles."""
-        if not self.running or self.paused or not self.use_repair:
-            return
-        if self.cycle_count % self.repair_every != 0:
+        """Executes repair sequence (Command or Free Crafting)."""
+        # Run if either repair mode is enabled
+        if not self.running or self.paused:
             return
         
-        self.log(f"   🔧 /repair (every {self.repair_every} cycles)")
-        time.sleep(0.1)
-        self.send_command("/repair")
-        time.sleep(0.3)
+        if not (self.use_repair or self.use_free_repair):
+            return
+
+        if self.cycle_count % self.repair_every != 0:
+            return
+            
+        if self.use_free_repair:
+            self.perform_free_repair()
+        elif self.use_repair:
+            self.log(f"   🔧 /repair (every {self.repair_every} cycles)")
+            time.sleep(0.1)
+            self.send_command("/repair")
+            time.sleep(0.3)
+        
+    def repair(self):
+        """Executes repair sequence (Command or Manual)."""
+        # Run if either repair mode is enabled
+        if not self.running or self.paused:
+            return
+        
+        if not (self.use_repair or self.use_free_repair):
+            return
+
+        if self.cycle_count % self.repair_every != 0:
+            return
+            
+        if self.use_free_repair:
+            self.perform_free_repair()
+        elif self.use_repair:
+            self.log(f"   🔧 /repair (every {self.repair_every} cycles)")
+            time.sleep(0.1)
+            self.send_command("/repair")
+            time.sleep(0.3)
     
     def main_loop(self):
         while self.running:
@@ -376,6 +506,11 @@ class BlockPlacer:
                 found, _ = self.find_minecraft()
                 if not found:
                     return False, None
+            
+            # Auto-resize if free repair is enabled
+            if self.use_free_repair:
+                self.resize_window()
+                
             self.paused = False
             self.log("▶️ PLACING STARTED!")
             return True, self.window_title
@@ -443,6 +578,16 @@ class PlacerGUI(ctk.CTk):
         self.is_running = False
         
         self.create_widgets()
+        
+        # Check Admin Rights
+        try:
+            is_admin = ctypes.windll.shell32.IsUserAnAdmin()
+            if not is_admin:
+                self.after(500, lambda: self.add_log("⚠️ WARNING: Not running as Admin!"))
+                self.after(600, lambda: self.add_log("   Input might be blocked by MC."))
+        except:
+            pass
+            
         self.load_config_to_gui()
         self.setup_hotkeys()
         self.placer.start()
@@ -580,6 +725,21 @@ class PlacerGUI(ctk.CTk):
         self.repair_sw.pack(side="right")
         self.repair_sw.select()
         
+        row1b = ctk.CTkFrame(opts_content, fg_color="transparent")
+        row1b.pack(fill="x", pady=4)
+        
+        ctk.CTkLabel(row1b, text="Free Repair (Crafting)", 
+                    font=ctk.CTkFont(size=11), 
+                    text_color=self.COLORS['text_secondary']).pack(side="left")
+        
+        self.free_repair_sw = ctk.CTkSwitch(row1b, text="", width=42, height=22,
+                                       progress_color=self.COLORS['text_primary'],
+                                       button_color=self.COLORS['text_primary'],
+                                       button_hover_color=self.COLORS['text_secondary'],
+                                       fg_color=self.COLORS['bg_input'],
+                                       command=self.update_opts)
+        self.free_repair_sw.pack(side="right")
+        
         row2 = ctk.CTkFrame(opts_content, fg_color="transparent")
         row2.pack(fill="x", pady=4)
         
@@ -597,22 +757,7 @@ class PlacerGUI(ctk.CTk):
         self.repair_every_entry.pack(side="right")
         self.repair_every_entry.insert(0, "100")
         
-        row3 = ctk.CTkFrame(opts_content, fg_color="transparent")
-        row3.pack(fill="x", pady=4)
-        
-        ctk.CTkLabel(row3, text="Action delay (sec)", 
-                    font=ctk.CTkFont(size=11), 
-                    text_color=self.COLORS['text_secondary']).pack(side="left")
-        
-        self.delay_entry = ctk.CTkEntry(row3, width=60, height=28, 
-                                        font=ctk.CTkFont(size=11),
-                                        fg_color=self.COLORS['bg_input'],
-                                        border_color=self.COLORS['border'],
-                                        text_color=self.COLORS['text_primary'],
-                                        justify="center",
-                                        corner_radius=6)
-        self.delay_entry.pack(side="right")
-        self.delay_entry.insert(0, "0.05")
+        # row3 removed (Action delay)
         
         ctk.CTkFrame(opts_content, fg_color=self.COLORS['border'], height=1).pack(fill="x", pady=8)
         
@@ -729,8 +874,8 @@ class PlacerGUI(ctk.CTk):
         
         self.log_box = ctk.CTkTextbox(log_card, 
                                       fg_color=self.COLORS['bg_input'],
-                                      text_color=self.COLORS['text_secondary'],
-                                      font=ctk.CTkFont(family="Consolas", size=10),
+                                      text_color=self.COLORS['text_primary'],
+                                      font=ctk.CTkFont(family="Consolas", size=11),
                                       corner_radius=8,
                                       border_width=1,
                                       border_color=self.COLORS['border'])
@@ -748,14 +893,14 @@ class PlacerGUI(ctk.CTk):
     
     def update_opts(self):
         self.placer.use_repair = self.repair_sw.get()
+        self.placer.use_free_repair = self.free_repair_sw.get()
         try:
             self.placer.repair_every = max(1, int(self.repair_every_entry.get()))
         except:
             self.placer.repair_every = 100
-        try:
-            self.placer.place_delay = max(0.01, float(self.delay_entry.get()))
-        except:
-            self.placer.place_delay = 0.05
+        
+        # Fixed delay
+        self.placer.place_delay = 0.05
         
         self.placer.use_slot_rotation = self.slot_rotation_sw.get()
         try:
@@ -818,8 +963,9 @@ class PlacerGUI(ctk.CTk):
         """Saves configuration to file."""
         config_dict = {
             'use_repair': self.repair_sw.get(),
+            'use_free_repair': self.free_repair_sw.get(),
             'repair_every': int(self.repair_every_entry.get()) if self.repair_every_entry.get().isdigit() else 100,
-            'place_delay': float(self.delay_entry.get()) if self.delay_entry.get().replace('.', '').isdigit() else 0.05,
+            # 'place_delay': removed
             'use_slot_rotation': self.slot_rotation_sw.get(),
             'slot_rotate_every': int(self.slot_rotate_entry.get()) if self.slot_rotate_entry.get().isdigit() else 500,
             'use_eating': self.eating_sw.get(),
@@ -839,12 +985,16 @@ class PlacerGUI(ctk.CTk):
             self.repair_sw.select()
         else:
             self.repair_sw.deselect()
+            
+        if self.config.get('use_free_repair', False):
+            self.free_repair_sw.select()
+        else:
+            self.free_repair_sw.deselect()
         
         self.repair_every_entry.delete(0, 'end')
-        self.repair_every_entry.insert(0, str(self.config.get('repair_every', 100)))
+        self.repair_every_entry.insert(0, str(self.config.get('repair_every', 238)))
         
-        self.delay_entry.delete(0, 'end')
-        self.delay_entry.insert(0, str(self.config.get('place_delay', 0.05)))
+        # self.delay_entry removed
         
         if self.config.get('use_slot_rotation', False):
             self.slot_rotation_sw.select()
