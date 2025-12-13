@@ -562,6 +562,13 @@ class PlacerGUI(ctk.CTk):
     def __init__(self):
         super().__init__()
         
+        # Force taskbar icon
+        try:
+            myappid = 'mcapple.bot.gui.1.0' # arbitrary string
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        except:
+            pass
+        
         self.title("Mc-Apple")
         self.geometry("420x820")
         self.resizable(False, False)
