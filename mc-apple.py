@@ -206,13 +206,11 @@ class BlockPlacer:
         if self.hwnd:
             lparam = make_lparam(vk, down=True)
             PostMessage(self.hwnd, WM_KEYDOWN, vk, lparam)
-            SendMessage(self.hwnd, WM_KEYDOWN, vk, lparam)
     
     def key_up(self, vk):
         if self.hwnd:
             lparam = make_lparam(vk, down=False)
             PostMessage(self.hwnd, WM_KEYUP, vk, lparam)
-            SendMessage(self.hwnd, WM_KEYUP, vk, lparam)
 
     def resize_window(self):
         """Resizes the Minecraft window to 1280x720."""
@@ -408,11 +406,8 @@ class BlockPlacer:
             self.log(f"   ❌ Craft Error: {e}")
             pyautogui.keyUp('shift')
             
-        self.key_press(0x1B)
-        time.sleep(0.3)
-        
-        self.key_press(0x1B)
-        time.sleep(0.2)
+        self.key_press(0x45)
+        time.sleep(0.5)
         
     def repair(self):
         """Executes repair sequence (Command or Free Crafting)."""
