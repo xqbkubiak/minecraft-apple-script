@@ -1,0 +1,216 @@
+{
+  "mod.info": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Mod BK-Rynek by bkubiak.dev",
+    "&8- &fDołącz do discord&8: &2https://dc.bkubiak.dev",
+    "&8- &fMoj GitHub&8: &2https://github.com/xqbkubiak",
+    "&8- &fChcesz wesprzec? &2https://tipply.pl/@rajzeh",
+    " ",
+    " &6| &eConfig zostal wygenerowany w miejscu:",
+    " &6| &e.minecraft/config/BK-Mods/BK-Rynek/&6bkrynek-config.json",
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Komendy pod &f/bkr pomoc",
+    " "
+  ],
+  "command.afk.enabled": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Tryb AFK został &awłączony&7!",
+    " "
+  ],
+  "command.afk.disabled": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Tryb AFK został &cwyłączony&7!",
+    " "
+  ],
+  "command.profiles.list": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Dostepne profile:"
+  ],
+  "command.profile.change": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Twoj aktywny profil zostal zmieniony na: &f%profile%",
+    " "
+  ],
+  "command.add.success": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Dodano &f%item% &7z maksymalna cena &a%price% &7do profilu &f%profile%",
+    " "
+  ],
+  "command.remove.success": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Usunieto &f%item% &7z profilu &f%profile%",
+    " "
+  ],
+  "command.list": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Przedmioty dla profilu &f%profile%:"
+  ],
+  "command.help": [
+    "&8[&2B&aK &fRynek&8] &7Mod BK-Rynek by bkubiak.dev",
+    "&8- &fChcesz wesprzec? &2https://tipply.pl/@rajzeh",
+    "&8- &fDołącz do discord&8: &2https://dc.bkubiak.dev",
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Dostepne komendy:",
+    "&8- &f/bkr &8- &7Informacje o modzie",
+    "&8- &f/bkr profiles &8- &7Wyswietla dostepne profile",
+    "&8- &f/bkr list &8- &7Wyswietla przedmioty profilu",
+    "&8- &f/bkr sounds &8- &7Wlacza/wyłącza alarmy dźwiękowe",
+    "&8- &f/bkr pomoc &8- &7Lista komend",
+    "&8- &f/bkr config reload &8- &7Przeladowuje dane z configu",
+    "&8- &f/bkr gui &8- &7Otwiera panel sterowania",
+    "&8- &f/bkr setup &8- &7Konfiguracja przyciskow rynku",
+    "&8- &f/bkr webhook <url> &8- &7Discord powiadomienia",
+    " ",
+    "&8[&2B&aK &fRynek&8] &aCtrl &f+ &aA &8- &7Dodaj przedmiot pod kursorem",
+    "&8[&2B&aK &fRynek&8] &aCtrl &f+ &aS &8- &7Ustaw przyciski rynku (w trybie setup)",
+    "&8[&2B&aK &fRynek&8] &aCtrl &f+ &aR &8- &7Zarządzaj podświetlaniem",
+    "&8[&2B&aK &fRynek&8] &a/bkr afk &8- &7Włącza/wyłącza tryb Anti-AFK",
+    " "
+  ],
+  "player.join": [
+    "&8[&2B&aK &fRynek&8] &fBK-Rynek uruchomiony &apomyślnie!",
+    "&8» &7Discord: &adc.bkubiak.dev",
+    "&8» &7Komendy: &a/bkr pomoc",
+    "&8» &7GUI: &a/bkr gui"
+  ],
+  "pricelist.no_data": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &cBrak danych dla profilu &f%profile%",
+    " "
+  ],
+  "pricelist.no_items": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &cBrak przedmiotow w profilu &f%profile%",
+    " "
+  ],
+  "pricelist.icon.edit": [
+    "&8[&eEdytuj&8]"
+  ],
+  "pricelist.icon.remove": [
+    "&8[&cUsun&8]"
+  ],
+  "pricelist.item_line": [
+    "&8- &f%item%&8: &a%price%"
+  ],
+  "profile.set": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Ustawiono profil: &f%profile%",
+    " "
+  ],
+  "command.profiles.header": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Dostepne profile:"
+  ],
+  "profile.available.line": [
+    "&7- &f%profile% &8[&eKliknij aby zmienić&8]"
+  ],
+  "profile.picked.line": [
+    "&7- &a%profile% &8[&2Wybrany&8]"
+  ],
+  "command.list.header": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Przedmioty dla profilu &f%profile%:"
+  ],
+  "command.config.save.success": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &aKonfiguracja zostala zapisana.",
+    " "
+  ],
+  "command.config.reload.success": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &aKonfiguracja zostala przeladowana&7.",
+    " "
+  ],
+  "command.scanner.toggle.on": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Podswietlanie &awlaczone&7.",
+    " "
+  ],
+  "command.scanner.toggle.off": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Podswietlanie &cwylaczone&7.",
+    " "
+  ],
+  "command.sounds.current_on": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Powiadomienia dzwiekowe sa &awlaczone&7.",
+    " "
+  ],
+  "command.sounds.current_off": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Powiadomienia dzwiekowe sa &cwylaczone&7.",
+    " "
+  ],
+  "command.sounds.enabled": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Powiadomienia dzwiekowe zostaly &awlaczone&7.",
+    " "
+  ],
+  "command.sounds.disabled": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Powiadomienia dzwiekowe zostaly &cwylaczone&7.",
+    " "
+  ],
+  "command.searchlist.list.empty": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Lista z przedmiotami do wyszukiwania jest &cpusta&7.",
+    " "
+  ],
+  "command.searchlist.add": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Dodano &a'%item%' &7do listy wyszukiwania.",
+    " "
+  ],
+  "command.searchlist.remove": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Usunięto &c'%item%' &7do listy wyszukiwania.",
+    " "
+  ],
+  "command.searchlist.start": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &aRozpoczeto &7zliczanie &fwyswietlonych &7przedmiotow",
+    "&8- &7Otworz &frynek &7i przewertuj strony, a ja zajme sie reszta.",
+    "&8- &7Po zakonczeniu wpisz &f/bkr search stop &7aby poznac statysyki",
+    " ",
+    "&6| &ePo 5 minutach sam zatrzymam zliczanie",
+    " "
+  ],
+  "command.searchlist.stop.header": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &aZakończono &7zliczanie wyswietlonych przedmiotow",
+    "&8[&2B&aK &fRynek&8] &7Oto co udalo mi sie ustalic:"
+  ],
+  "command.searchlist.stop.pages": [
+    "&8[&2B&aK &fRynek&8] &7Sprawdzone strony: &f%pages%"
+  ],
+  "command.searchlist.stop.reason.limit": [
+    "&8[&2B&aK &fRynek&8] &7Powod: &fosiagnieto limit stron"
+  ],
+  "command.searchlist.stop.reason.no_next": [
+    "&8[&2B&aK &fRynek&8] &7Powod: &fbrak kolejnej strony"
+  ],
+  "command.searchlist.stop.reason.no_gui": [
+    "&8[&2B&aK &fRynek&8] &7Powod: &fnie udalo sie otworzyc rynku"
+  ],
+  "command.searchlist.stop.reason.manual": [
+    "&8[&2B&aK &fRynek&8] &7Powod: &freczne zatrzymanie"
+  ],
+  "command.searchlist.stop.line": [
+    "&8- &f%item%&8(&a%count%&8):",
+    "   &fmin: &a%min%&7, &fmax: &2%max%&7, &fśrednia: &e%avg%",
+    "   &fmediana: &d%median%&7, &fQ1: &2%quartile1%&7, &fQ3: &a%quartile3%"
+  ],
+  "command.searchlist.list.header": [
+    " ",
+    "&8[&2B&aK &fRynek&8] &7Lista przedmiotów do wyszukiwania:"
+  ],
+  "command.searchlist.list.line": [
+    "&8- &f%item%"
+  ],
+  "command.searchlist.list.remove.hover": [
+    "Kliknij aby usunac ten przedmiot"
+  ],
+  "command.searchlist.expired": [
+    "Czas wyszukiwania minął."
+  ]
+}

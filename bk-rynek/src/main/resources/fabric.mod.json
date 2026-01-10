@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "bkrynek",
+	"version": "${version}",
+	"name": "BK-Rynek",
+	"description": "Modyfikacja ułatwiająca działania rynkowe na różnych serwerach Minecraft. By bkubiak.dev",
+	"authors": [
+		"bkubiak"
+	],
+	"contact": {
+		"homepage": "https://bkubiak.dev/",
+		"sources": "https://github.com/xqbkubiak"
+	},
+	"license": "MIT",
+	"icon": "assets/bkrynek/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"pl.bkubiak.bkrynek.client.BkRynekClient"
+		]
+	},
+	"mixins": [
+		{
+			"config": "bkrynek.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": ">=1.21 <=1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

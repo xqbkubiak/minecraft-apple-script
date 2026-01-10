@@ -1,0 +1,34 @@
+﻿{
+    "schemaVersion":  1,
+    "id":  "bkrynek",
+    "version":  "${version}",
+    "name":  "BK-Rynek [1.21.5]",
+    "description":  "Profesjonalny menedżer rynku dla gry Minecraft. Dominacja nad gospodarką dzięki szybkiemu snajperowaniu, zaawansowanemu automatycznemu skanowaniu.",
+    "authors":  [
+                    "bkubiakdev"
+                ],
+    "contact":  {
+                    "homepage":  "https://bkubiak.dev/mods",
+                    "sources":  "https://github.com/xqbkubiak"
+                },
+    "license":  "MIT",
+    "icon":  "assets/bkrynek/icon.png",
+    "environment":  "*",
+    "entrypoints":  {
+                        "client":  [
+                                       "pl.bkubiak.bkrynek.client.BkRynekClient"
+                                   ]
+                    },
+    "mixins":  [
+                   {
+                       "config":  "bkrynek.client.mixins.json",
+                       "environment":  "client"
+                   }
+               ],
+    "depends":  {
+                    "fabricloader":  "\u003e=0.15.11",
+                    "minecraft":  "~1.21.5",
+                    "java":  "\u003e=21",
+                    "fabric-api":  "*"
+                }
+}

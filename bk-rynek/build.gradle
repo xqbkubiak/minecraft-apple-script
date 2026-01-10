@@ -1,0 +1,110 @@
+plugins {
+    id 'fabric-loom' version '1.11-SNAPSHOT' apply false
+    id 'maven-publish'
+}
+
+group = 'pl.bkubiak'
+version = '1.0'
+
+subprojects {
+    apply plugin: 'java'
+    
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+    
+    repositories {
+        maven { url "https://maven.fabricmc.net/" }
+        mavenCentral()
+    }
+}
+
+// Common module configuration
+project(':common') {
+    dependencies {
+        implementation 'com.google.code.gson:gson:2.10.1'
+    }
+}
+
+// Configure all version modules
+configure(subprojects.findAll { it.name.startsWith('v1.') }) {
+    apply plugin: 'fabric-loom'
+
+    // Centralized version definitions using gradle.properties
+    def mcVersionMap = [
+        // 'v1.20.1' : [mc: ver_1_20_1_minecraft, mappings: ver_1_20_1_yarn, loader: '0.16.9',  fabricApi: ver_1_20_1_fabric],
+        // 'v1.20.4' : [mc: ver_1_20_4_minecraft, mappings: ver_1_20_4_yarn, loader: '0.16.9',  fabricApi: ver_1_20_4_fabric],
+        // 'v1.20.6' : [mc: ver_1_20_6_minecraft, mappings: ver_1_20_6_yarn, loader: '0.16.9',  fabricApi: ver_1_20_6_fabric],
+        'v1.21.1' : [mc: ver_1_21_1_minecraft, mappings: ver_1_21_1_yarn, loader: '0.16.9',  fabricApi: ver_1_21_1_fabric],
+        'v1.21.3' : [mc: ver_1_21_3_minecraft, mappings: ver_1_21_3_yarn, loader: '0.16.9',  fabricApi: ver_1_21_3_fabric],
+        'v1.21.4' : [mc: ver_1_21_4_minecraft, mappings: ver_1_21_4_yarn, loader: '0.16.9',  fabricApi: ver_1_21_4_fabric],
+        'v1.21.5' : [mc: ver_1_21_5_minecraft, mappings: ver_1_21_5_yarn, loader: '0.16.9',  fabricApi: ver_1_21_5_fabric],
+        'v1.21.6' : [mc: ver_1_21_6_minecraft, mappings: ver_1_21_6_yarn, loader: '0.16.11', fabricApi: ver_1_21_6_fabric],
+        'v1.21.8' : [mc: '1.21.8', mappings: '1.21.8+build.1', loader: '0.18.3', fabricApi: '0.136.1+1.21.8'],
+        'v1.21.10': [mc: '1.21.10', mappings: '1.21.10+build.3', loader: '0.18.3', fabricApi: '0.138.4+1.21.10']
+    ]
+
+    def cfg = mcVersionMap[project.name]
+
+    dependencies {
+        if (cfg != null) {
+            minecraft "com.mojang:minecraft:${cfg.mc}"
+            mappings "net.fabricmc:yarn:${cfg.mappings}:v2"
+            modImplementation "net.fabricmc:fabric-loader:${cfg.loader}"
+            modImplementation "net.fabricmc.fabric-api:fabric-api:${cfg.fabricApi}"
+        }
+
+        implementation project(':common')
+        include project(':common')
+        implementation 'com.google.code.gson:gson:2.10.1'
+    }
+
+    loom {
+        splitEnvironmentSourceSets()
+        mods {
+            "bkrynek" {
+                sourceSet sourceSets.main
+                sourceSet sourceSets.client
+            }
+        }
+    }
+
+    processResources {
+        inputs.property "version", rootProject.version
+        
+        // Ensure inputs are present to avoid up-to-date checks failing weirdly if properties miss
+        if (cfg != null) {
+             inputs.property "mc_version", cfg.mc
+        }
+
+        filesMatching("fabric.mod.json") {
+            expand "version": inputs.properties.version
+        }
+    }
+
+    jar {
+        from(rootProject.file("LICENSE")) {
+            rename { "${it}_bkrynek" }
+        }
+        from(project(':common').sourceSets.main.output)
+        archiveBaseName = "BK-Rynek"
+        archiveVersion = "${project.name.replace('v', '')}"
+    }
+
+    tasks.named('remapJar') {
+        archiveBaseName = "BK-Rynek"
+        archiveVersion = "${project.name.replace('v', '')}"
+    }
+
+    java {
+        withSourcesJar()
+    }
+}
+
+// Task to build all versions at once
+task buildAll {
+    dependsOn subprojects.findAll { it.name.startsWith('v1.') }.collect { ":${it.name}:build" }
+    description = 'Build all version modules'
+    group = 'build'
+}

@@ -1,0 +1,177 @@
+{
+  "defaultProfile": "default",
+  "servers": [
+    {
+      "domains": [
+        "*"
+      ],
+      "profileName": "default",
+      "loreRegex": "(?i).*Cena\\s*:?\\s*(?:\\$\\s*)?((?:\\d{1,3}(?:[\\s\\u00A0.,]\\d{3})*|\\d+)(?:mld|m|k)?)(?:\\s*\\$)?.*",
+      "highlightColor": "#80FF00",
+      "highlightColorStack": "#FF8000",
+      "miniAlarmSound": "minecraft:ui.button.click",
+      "miniAlarmSoundStack": "minecraft:entity.player.levelup",
+      "marketCommands": [],
+      "marketOpenDelayMs": 1500,
+      "marketNextDelayMs": 800,
+      "marketCloseDelayMs": 500,
+      "successMessages": [],
+      "errorMessages": [],
+      "prices": []
+    },
+    {
+      "domains": [
+        "minestar.pl"
+      ],
+      "profileName": "minestar_boxpvp",
+      "loreRegex": "(?i).*Cena.*?\\$?([\\d.,]+(?:mld|[km])?).*",
+      "highlightColor": "#00FF00",
+      "highlightColorStack": "#FF9900",
+      "miniAlarmSound": "minecraft:ui.button.click",
+      "miniAlarmSoundStack": "minecraft:ui.toast.challenge_complete",
+      "marketCommands": [
+        "/ah otworz",
+        "/rynek otworz"
+      ],
+      "marketGuiTitle": "Rynek",
+      "marketNextPageName": "Nastepna strona",
+      "marketNextPageMaterial": "minecraft:tipped_arrow",
+      "marketNextPageSlot": 53,
+      "marketOpenDelayMs": 500,
+      "marketNextDelayMs": 200,
+      "marketCloseDelayMs": 500,
+      "successMessages": [],
+      "errorMessages": [],
+      "prices": [
+        {
+          "name": "minecraft:gunpowder",
+          "maxPrice": 100.0,
+          "componentCount": 0,
+          "requiredCount": 0
+        }
+      ]
+    },
+    {
+      "domains": [
+        "anarchia.gg"
+      ],
+      "profileName": "anarchia_smp",
+      "loreRegex": "(?i).*Koszt.*?\\$([\\d.,]+(?:mld|[km])?).*",
+      "highlightColor": "#00FF00",
+      "highlightColorStack": "#FF9900",
+      "miniAlarmSound": "minecraft:ui.button.click",
+      "miniAlarmSoundStack": "minecraft:ui.toast.challenge_complete",
+      "marketCommands": [
+        "/ah",
+        "/rynek"
+      ],
+      "marketGuiTitle": "Rynek",
+      "marketNextPageName": "Nastepna strona",
+      "marketNextPageMaterial": "minecraft:lime_dye",
+      "refreshSlot": 53,
+      "confirmSlot": 11,
+      "marketNextPageSlot": 50,
+      "marketOpenDelayMs": 500,
+      "marketNextDelayMs": 800,
+      "marketCloseDelayMs": 500,
+      "successMessages": [],
+      "errorMessages": [],
+      "prices": [
+        {
+          "name": "Diamond Helmet",
+          "lore": "Aqua Affinity III;Respiration III;Protection IV;Unbreaking III;When on Head:;+3 Armor;+2 Armor Toughness;+1200% Submerged Mining Speed;+3 Oxygen Bonus",
+          "material": "minecraft:diamond_helmet",
+          "enchants": "unknown,unknown,prot4,unbr3",
+          "maxPrice": 15555.0,
+          "componentCount": 13,
+          "requiredCount": 0
+        }
+      ]
+    },
+    {
+      "domains": [
+        "rapy.pl",
+        "rapy.gg",
+        "rapysmp.pl",
+        "jjsmp.pl"
+      ],
+      "profileName": "rapy",
+      "loreRegex": "(?i).*Cena\\s*:?\\s*(?:\\$\\s*)?((?:\\d{1,3}(?:[\\s\\u00A0.,]\\d{3})*|\\d+)(?:mld|m|k)?)(?:\\s*\\$)?.*",
+      "highlightColor": "#00FF00",
+      "highlightColorStack": "#FF9900",
+      "miniAlarmSound": "minecraft:ui.button.click",
+      "miniAlarmSoundStack": "minecraft:ui.toast.challenge_complete",
+      "marketCommands": [
+        "/ah",
+        "/rynek"
+      ],
+      "marketGuiTitle": "Market",
+      "marketNextPageName": "Nastepna strona",
+      "marketNextPageMaterial": "minecraft:arrow",
+      "refreshSlot": 1,
+      "confirmSlot": 11,
+      "marketNextPageSlot": 53,
+      "marketOpenDelayMs": 500,
+      "marketNextDelayMs": 100,
+      "marketCloseDelayMs": 500,
+      "successMessages": [],
+      "errorMessages": [],
+      "prices": []
+    },
+    {
+      "domains": [
+        "pykmc.pl"
+      ],
+      "profileName": "pykmc",
+      "loreRegex": "(?i).*Kwota.*?\\$([\\d.,]+(?:mld|m|k)?).*",
+      "highlightColor": "#00FF00",
+      "highlightColorStack": "#FF9900",
+      "miniAlarmSound": "minecraft:ui.button.click",
+      "miniAlarmSoundStack": "minecraft:ui.toast.challenge_complete",
+      "marketCommands": [
+        "/ah",
+        "/rynek"
+      ],
+      "marketGuiTitle": "Rynek",
+      "marketNextPageName": "Nastepna",
+      "marketNextPageMaterial": "minecraft:green_terracotta",
+      "marketNextPageSlot": 50,
+      "marketOpenDelayMs": 500,
+      "marketNextDelayMs": 200,
+      "marketCloseDelayMs": 500,
+      "successMessages": [],
+      "errorMessages": [],
+      "prices": [
+        {
+          "name": "minecraft:emerald",
+          "maxPrice": 200.0,
+          "componentCount": 0,
+          "requiredCount": 0
+        },
+        {
+          "name": "legendarny miecz",
+          "lore": "Fire Aspect III;Sharpness VI;Zadaje: +41%; Kwota $11k;-2.4 Attack Speed",
+          "material": "minecraft:netherite_sword",
+          "enchants": "fire3,sharp6",
+          "maxPrice": 1212332.0,
+          "componentCount": 16,
+          "requiredCount": 0
+        }
+      ]
+    },
+    {
+      "domains": [
+        "pykmc.pl"
+      ],
+      "profileName": "pykmc_lifesteal",
+      "loreRegex": "(?i).*Kwota.*?\\$([\\d.,]+(?:mld|m|k)?).*",
+      "highlightColor": "#00FF33",
+      "highlightColorStack": "#FFAB00",
+      "miniAlarmSound": "minecraft:ui.button.click",
+      "miniAlarmSoundStack": "minecraft:ui.toast.challenge_complete",
+      "prices": []
+    }
+  ],
+  "soundsEnabled": false,
+  "discordWebhookUrl": "https://discord.com/api/webhooks/1458983641274388491/PhBzVnaXQDsw4x3G5eIBYxBn_dGfOzakaCFuVpf1T7fTIJ6ENHHqeHDAedJETT9gq4qM"
+}
